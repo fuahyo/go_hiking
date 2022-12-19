@@ -2,7 +2,7 @@
 
 @section('container')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">My CAPA</h1>
+            <h1 class="h2 ">My CAPA</h1>
     </div>
 
     @if(session()->has('success'))
@@ -16,17 +16,15 @@
           <thead>
             <tr class="text-center col-md-auto">
                 <th scope="col">No.</th>
-                <th scope="col">Reference</th>
                 <th scope="col">Finding</th>
                 <th scope="col">Classification</th>
-                <th scope="col">Requirement</th>
-                <th scope="col">GAP Analysis</th>
                 <th scope="col">Root Cause</th>
-                <th scope="col">Corrective Action</th>
-                <th scope="col">Preventive Action</th>
                 <th scope="col">Timeline</th>
-                <th scope="col">Proof</th>
-                <th scope="col">Status</th>    
+                <th scope="col">Action</th>
+                <th scope="col">CAPA Status</th>    
+                <th scope="col">New Timeline 1</th>    
+                <th scope="col">New Timeline 2</th>    
+                <th scope="col">Process Status</th>
             </tr>
           </thead>
 
@@ -34,21 +32,136 @@
             @foreach ($posts as $post)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td class="text-center">{{ $post->source_capa }}</td>
+                    
                     <td>{{ $post->finding }}</td>
                     <td class="text-center">{{ $post->classification->name }}</td>
-                    <td class="text-center">{{ $post->requirement }}</td>
-                    <td class="text-center">{{ $post->gap_analysis }}</td>
                     <td class="text-center">{{ $post->rootcause->name }}</td>
-                    <td>{{ $post->corrective_action }}</td>
-                    <td>{{ $post->preventive_action }}</td>
                     <td class="text-center">{{ $post->timeline->format('d M Y') }}</td>
                     <td class="text-center">
-                      <div class="">
-                        <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-warning border-0 btn-sm mb-1 mr-1"><span data-feather="edit"></span>upload</a>
-                      </div>
-                    </td>
-                    <td class="text-center">{{ $post->status->name }}</td>
+                        <div>
+                          <a href="/dashboard/mypost/{{$post->slug}}" class="btn btn-primary border-0 btn-sm mb-1 mr-1"><i class="fa fa-search"></i><span data-feather="edit"></span> Show</a>                    
+                        </div>
+                          <!-- <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-secondary border-0 btn-sm mb-1 mr-1"><i class="fa fa-upload"></i><span data-feather="edit"></span> Upload</a> -->
+                        @if($reminder > $post->timeline)
+                            @if($currentdate <= $post->timeline)
+                              @if($post->prove == null && $post->modifikasi1 == null)
+                                <div>
+                                  <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-warning border-0 btn-sm mb-1 mr-1"><i class="fa fa-rocket"></i><span data-feather="edit"></span> Justifikasi 1</a>
+                                </div>
+                              @endif
+                            @endif
+                        @endif
+                        @if($reminder > $post->timeline1)
+                            @if($currentdate <= $post->timeline1)
+                              @if($post->prove == null && $post->modifikasi2 == null)
+                                <div>
+                                  <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-warning border-0 btn-sm mb-1 mr-1"><i class="fa fa-rocket"></i><span data-feather="edit"></span> Justifikasi 2</a>
+                                </div>
+                              @endif
+                            @endif
+                        @endif
+
+                        @if(auth()->user()->role_id == '3')
+                          <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-secondary border-0 btn-sm mb-1 mr-1"><i class="fa fa-thumbs-up"></i><span data-feather="edit"></span> Approve</a>
+                        @else
+                          @if($currentdate <= $post->timeline)
+                            @if(auth()->user()->role_id == '2')
+                              @if($post->prove != null)
+                                @if($post->approved == '0')
+                                <div>
+                                  <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-secondary border-0 btn-sm mb-1 mr-1"><i class="fa fa-thumbs-up"></i><span data-feather="edit"></span> Approve</a>
+                                </div>
+                                @endif 
+                              @endif
+                            @else(auth()->user()->role_id == '1')
+                              <div>
+                                <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-secondary border-0 btn-sm mb-1 mr-1"><i class="fa fa-upload"></i><span data-feather="edit"></span> Upload</a>
+                              </div>
+                            @endif
+                          @else
+                            @if(auth()->user()->role_id == '2' && $post->prove != null)
+                              @if($post->approved == '0')
+                              <div>
+                                <a href="/dashboard/mypost/{{$post->slug}}/edit" class="btn btn-secondary border-0 btn-sm mb-1 mr-1"><i class="fa fa-thumbs-up"></i><span data-feather="edit"></span> Approve</a>
+                              </div>
+                              @endif 
+                            @endif
+                          @endif
+                        @endif
+                    </td>        
+                    <td class="text-center">{{ $post->status->name }}</td>     
+                    <td class="text-center">
+                      @if($post->timeline1 != null && $post->justifikasi1approved == '1')
+                          {{ $post->timeline1->format('d M Y') }}
+                      @else
+                          N/A 
+                      @endif
+                    </td> 
+                    <td class="text-center">
+                      @if($post->timeline2 != null && $post->justifikasi2approved == '1')
+                          {{ $post->timeline2->format('d M Y') }}
+                      @else
+                          N/A 
+                      @endif
+                    </td> 
+
+                    @if($currentdate <= $post->timeline)
+                      <td class=" text-center">
+                        @if($post->prove == null)
+                            @if($post->modifikasi1 == null )
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-1" disabled>Waiting for Action</button>
+                            @else
+                              @if($post->justifikasi1approved != '1')
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-1" disabled>Request for Just.(1)</button>
+                              @else
+                                @if($post->modifikasi2 == null)
+                                  <button type="button" class="btn btn-outline-primary btn-sm mb-1" disabled>Waiting for Action</button>
+                                @else
+                                  @if($post->justifikasi2approved != '1')
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" disabled>Request for Just.(2)</button>
+                                  @else
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" disabled>Waiting for Upload</button>
+                                  @endif
+                                @endif
+                              @endif
+                            @endif
+                        @else
+                          @if($post->approved == '0')
+                          <div>
+                            <button type="button" class="btn btn-outline-dark btn-sm mb-1" disabled>Proof uploaded</button>
+                          </div>
+                          <div>
+                            <button type="button" class="btn btn-outline-warning btn-sm mb-1" disabled>Waiting for Approval</button>
+                          </div>
+                          @else
+                          <div>
+                            <button type="button" class="btn btn-outline-success btn-sm mb-1" disabled>Approved</button>
+                          </div>
+                          @endif
+                        @endif
+                      </td>
+                    @else($currentdate > $post->timeline)
+                      <td class=" text-center">
+                        @if($post->prove != null)
+                          <div>
+                            <button type="button" class="btn btn-outline-dark btn-sm mb-1" disabled>Proof uploaded</button>
+                          </div>
+                          @if($post->approved == '0')
+                            <div>
+                              <button type="button" class="btn btn-outline-warning btn-sm mb-1" disabled>Waiting for Approval</button>             
+                            </div>
+                            <button type="button" class="btn btn-outline-danger btn-sm mb-1" disabled>Out of Date</button>
+                          @else 
+                            <div>
+                              <button type="button" class="btn btn-outline-success btn-sm mb-1" disabled>Approved</button>
+                            </div>                         
+                          @endif 
+                        @else   
+                          <button type="button" class="btn btn-outline-danger btn-sm mb-1" disabled>Out of Date</button>
+                        @endif
+                      </td> 
+                    @endif
+
                 </tr>
             @endforeach
             

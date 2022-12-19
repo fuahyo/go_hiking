@@ -36,7 +36,7 @@
 
                     <div class="mt-2 mb-2">
                         <label for="prove" class="form-label mt-1">Keterangan:</label>
-                        <input type="text" class="form-control @error('prove') is-invalid @enderror" id="prove" name="prove" required autofocus value="{{old('prove', $post->prove)}}">
+                        <input type="text" class="form-control @error('prove') is-invalid @enderror" id="prove" name="prove"  value="{{old('prove', $post->prove)}}">
                         @error('prove')
                             <div  class="invalid-feedback">
                                 {{$message}}
@@ -45,7 +45,7 @@
                     </div>                                           
                 </div>
                 <div class="card-footer text-muted text-center">
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Upload</button>
+                    
                 </div>
             </div>
 
@@ -144,33 +144,6 @@
             </div>
 
             
-            <!-- <div class="mb-3">    
-                <label for="departement" class="form-label">Departement</label>
-                <select name="departement_id" id="departement_id" class="form-select">
-                    @foreach ($departements as $departement)
-                        @if( old('departement_id', $post->departement_id) == $departement->id)
-                            <option value="{{ $departement->id }}" selected>{{ $departement->name }}</option>
-                        @else
-                            <option value="{{ $departement->id }}">{{ $departement->name }}</option>
-                        @endif
-                    @endforeach
-                    
-
-                </select>
-            </div>
-            
-            <div class="mb-3">     
-                <label for="user" class="form-label">User</label>
-                <select name="user_id" id="user_id" class="form-select">
-                    <option value="">Select User</option>
-                     @if (!empty($users))
-                        @foreach ($users as $user)
-                            <option {{ ($user->user == $user->id) ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div> -->
-            
             
             <div class="mb-3">
                 <label for="timeline" class="form-label">Timeline</label>
@@ -199,6 +172,42 @@
                     @endforeach
                 </select>
             </div>
+            @if($post->timeline1 != null)
+            <div class="mb-3">
+                <label for="timeline1" class="form-label">New Timeline (1) --> Approval: </label>
+                <input class="form-check-input" type="checkbox" name="justifikasi1approved" value="1" @if(old('justifikasi1approved', $post->justifikasi1approved)=="1") checked  @endif>
+                
+                <input type="date" class="form-control @error('timeline1') is-invalid @enderror" id="timeline1" name="timeline1" required autofocus value="{{old('timeline1',optional($post->timeline1)->format('Y-m-d') )}}">
+                @error('timeline1')
+                        <div  class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                @enderror
+                @error('timeline1')
+                        <div  class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                @enderror      
+            </div>
+            @endif
+            @if($post->timeline2 != null)
+            <div class="mb-3">
+                <label for="timeline2" class="form-label">New Timeline (2) --> Approval: </label>
+                <input class="form-check-input" type="checkbox" name="justifikasi2approved" value="1" @if(old('justifikasi2approved', $post->justifikasi2approved)=="1") checked  @endif>
+                
+                <input type="date" class="form-control @error('timeline2') is-invalid @enderror" id="timeline2" name="timeline2" required autofocus value="{{old('timeline2',optional($post->timeline2)->format('Y-m-d') )}}">
+                @error('timeline2')
+                        <div  class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                @enderror
+                @error('timeline2')
+                        <div  class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                @enderror      
+            </div>
+            @endif
             <div class="mb-2">
                 <label for="departement" class="form-label">Departement</label>
                 <input type="text" class="form-control @error('departement_id') is-invalid @enderror" id="departement_id" name="departement_id" required autofocus value="{{old('departement->name', $post->departement->name)}}" aria-label="Disabled input example" disable readonly required>
@@ -208,7 +217,7 @@
                         </div>
                 @enderror
             </div>
-            <div class="mb-2">
+            <div class="mb-4">
                 <label for="user" class="form-label">User</label>
                 <input type="text" class="form-control @error('user_id') is-invalid @enderror" id="user_id" name="user_id" required autofocus value="{{old('user->name', $post->user->name)}}" aria-label="Disabled input example" disable readonly required>
                 @error('user_id')
@@ -216,6 +225,10 @@
                             {{$message}}
                         </div>
                 @enderror
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-outline-primary btn-sm">Upload</button>
             </div>
           
             <div class="mb-2 invisible">
@@ -233,6 +246,8 @@
                         </div>
                 @enderror
             </div>
+
+            
 
             <!-- <div class="mb-2">
                 <label for="source_capa" class="form-label">Referensi (Sumber CAPA)</label>

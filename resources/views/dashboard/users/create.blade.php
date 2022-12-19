@@ -31,11 +31,26 @@
                 <div class="mb-1">
                     <label for="departement" class="form-label">Departement</label>
                     <select class="form-select" name="departement_id">
+                        <option value="">Select departement</option>
                         @foreach ($departements as $departement)
                             @if( old('departement_id') == $departement->id)
                             <option value="{{ $departement->id }}" selected>{{ $departement->name }}</option>
                             @else
                             <option value="{{ $departement->id }}">{{ $departement->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-1">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-select" name="role_id">
+                        <option value="">Select role</option>
+                        @foreach ($roles as $role)
+                            @if( old('role_id') == $role->id)
+                            <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
+                            @else
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endif
                         @endforeach
                     </select>

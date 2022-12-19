@@ -50,6 +50,18 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-1">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-select" name="role_id">
+                        @foreach ($roles as $role)
+                            @if( old('role_id', $user->role_id) == $role->id)
+                            <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
+                            @else
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="mb-2">
                     <label for="email">Email address</label>

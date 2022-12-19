@@ -1,81 +1,54 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-danger sidebar collapse">
+    
     <div class="position-sticky pt-3">
         <ul class="nav flex-column mb-5">
             <li class="nav-item">
-                <!-- kalau requestnya dasboard, maka tampilkan kelas active -->
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="/dashboard">
+                <i class="fa fa-calendar"></i>
                 <span data-feather="home"></span>
                 Dashboard
               </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('dashboard/mypost*') ? 'active' : '' }}" href="/dashboard/mypost">
+                <i class="lnr lnr-file-empty"></i>
                 <span data-feather="file-text"></span>
                 My CAPA
               </a>
             </li>
         </ul>
 
-        @can('admin')
-        <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Administrator</span>
-        </h3>
+        @if(auth()->user()->role_id == '3')
+        <!-- @can('admin') -->
+            <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Administrator</span>
+            </h3>
 
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <!-- kalau requestnya dasboard.posts, maka tampilkan kelas active -->
-            <a class="nav-link {{ Request::is('dashboard/posts*') ? 'active' : '' }}" href="/dashboard/posts">
-              <span data-feather="file-text"></span>
-              All Post
-            </a>
-          </li>
-          <li class="nav-item">
-            <!-- kalau requestnya dasboard.posts, maka tampilkan kelas active -->
-            <a class="nav-link {{ Request::is('dashboard/users*') ? 'active' : '' }}" href="/dashboard/users">
-              <span data-feather="file-text"></span>
-              All User
-            </a>
-          </li>
-          <li class="nav-item">
-              <!-- kalau requestnya dasboard.posts, maka tampilkan kelas active -->
-            <a class="nav-link {{ Request::is('dashboard/categories*') ? 'active' : '' }}" href="/dashboard/categories">
-              <span data-feather="file-text"></span>
-               Categories
-            </a>
-          </li>
-        </ul>
-          <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Saved reports</span>
-            <a class="link-secondary" href="#" aria-label="Add a new report">
-              <span data-feather="plus-circle"></span>
-            </a>
-          </h6>
-          <ul class="nav flex-column mb-2">
+            <ul class="nav flex-column mb-5">
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ Request::is('dashboard/chart*') ? 'active' : '' }}" href="/dashboard/chart">
+                  <i class="lnr lnr-chart-bars"></i>
                   <span data-feather="file-text"></span>
-                  Current month
+                  Chart Report
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ Request::is('dashboard/posts*') ? 'active' : '' }}" href="/dashboard/posts">
+                  <i class="lnr lnr-map"></i>
                   <span data-feather="file-text"></span>
-                  Last quarter
+                  All Posts
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ Request::is('dashboard/users*') ? 'active' : '' }}" href="/dashboard/users">
+                  <i class="lnr lnr-user"></i>
                   <span data-feather="file-text"></span>
-                  Social engagement
+                  All Users
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Year-end sale
-                </a>
-              </li>
-          </ul> -->
-        @endcan
+              
+            </ul>
+        <!-- @endcan -->
+        @endif
     </div>
 </nav>       

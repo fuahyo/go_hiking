@@ -3,7 +3,7 @@
 @section('container')
     <div class="row justify-content-center">
         <div class="col-md-5">
-
+            <div class="mb-2 text-center" id="ho_main_content"></div>
             @if(session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>{{session('success')}}</strong> You should check in on some of those fields below.
@@ -19,7 +19,7 @@
             @endif
 
             <main class="form-signin">
-            <h1 class="h3 mb-3 fw-normal text-center">Please Login</h1>
+            <h1 class="h3 mt-5 mb-3 fw-normal text-center">Please Login</h1>
             <form action="/login" method="post">
                 @csrf
                 <!-- <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
@@ -46,7 +46,8 @@
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
                 <!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p> -->
             </form>
-            <small class="d-block text-center mt-3">Bermasalah dengan akun? <a href="https://wa.me/081221951242">Hubungi Admin!</a></small>
+            
+            <small class="d-block text-center mt-3">Bermasalah dengan akun? <a href="https://wa.me/6281221951242">Hubungi Admin!</a></small>
             </main>       
         </div>
     </div>

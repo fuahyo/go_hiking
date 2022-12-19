@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Departement;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,8 @@ class AdminUserController extends Controller
     {
         // return User::all();
         return view('dashboard.users.index', [
-            'users' => User::all()
+            'users' => User::all(),
+            // 'posts' => Post::all(),
         ]);
     }
 
@@ -36,7 +38,8 @@ class AdminUserController extends Controller
             
             'title' => 'Register',
             'active' => 'register',
-            'departements' => Departement::all()
+            'departements' => Departement::all(),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -53,6 +56,7 @@ class AdminUserController extends Controller
             //bisa nulis pakai tanda pipe "|" atau pakai array kaya dibawah ini
             'username' => ['required', 'min:3', 'max:255', 'unique:users'],
             'departement_id' => 'required',
+            'role_id' => 'required',
             'email' => 'required|email:dns|unique:users',
             'password' => 'required|min:5|max:255',
         ]);
@@ -95,7 +99,8 @@ class AdminUserController extends Controller
             'user' => $user,
             'title' => 'Register',
             'active' => 'register',
-            'departements' => Departement::all()
+            'departements' => Departement::all(),
+            'roles' => Role::all()
         ]);
     }
 
@@ -112,6 +117,7 @@ class AdminUserController extends Controller
             'name' => 'required|max:255',
             // 'username' => ['required', 'min:3', 'max:255', 'unique:users'],
             'departement_id' => 'required',
+            'role_id' => 'required',
             // 'email' => 'required|email:dns|unique:users',
             'password' => 'required|min:5|max:255',
         ];
